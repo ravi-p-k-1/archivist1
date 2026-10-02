@@ -1,0 +1,45 @@
+ACTION ITEMS
+
+1. Action: Make a PR for the Cloudflare worker code that forwards meeting transcripts to the archivist repo
+   Owner: Ravi
+   Due date: Not specified
+   Evidence excerpt: "I would need to make a PR for that."
+   Speaker: You
+   Timestamp: 00:07:13
+
+2. Action: Research how the multi-agent framework (Google ADK / AWS agent frameworks) can be fitted with Claude
+   Owner: Ravi
+   Due date: Not specified
+   Evidence excerpt: "I can do some research on it and let's see how the framework can be fitted with Claude."
+   Speaker: You
+   Timestamp: 01:11:06
+
+3. Action: Check how to have a real-time chat/agent during the meeting using the live transcript
+   Owner: Ravi
+   Due date: Not specified
+   Evidence excerpt: "I'll make a I'll make a check on how we could maybe have a real-time chat when we're in the meeting literally."
+   Speaker: You
+   Timestamp: 01:12:29
+
+4. Action: Send Ravi an email about the Claude Code CLI key-through-website info
+   Owner: Loren Heyns
+   Due date: Not specified
+   Evidence excerpt: "I'll send this email about the Rest quad code CLI."
+   Speaker: Loren Heyns
+   Timestamp: 01:45:51
+
+DECISIONS
+
+1. Gary's schema/DB changes were merged and the Azure pipeline works; schema work is considered done.
+2. Keep a full-rights 'exiobase provision host' connection (allows deletion) for a few admins, and make the web-facing connection read-only.
+3. Merge CLAUDE.md into AGENTS.md and delete the CLAUDE.md file in the pipeline repo.
+4. Using the Claude Code CLI subscription is acceptable as long as only the team member uses their own login and others cannot trigger it.
+
+OPEN QUESTIONS
+
+1. How to throttle the read-only API so it doesn't exceed Azure licensing limits or get overwhelmed.
+2. How to get the live transcript to an agent in real time (append to a text file, Whisper output, or webhook/worker)?
+3. Whether the Gemini API key populating issue and the removed Gemini model in the insights page are resolved.
+4. Is there an existing 'add a bot to my call' tool that would avoid building this ourselves?
+5. Whether SQL query logging in Azure is turned on (no entries shown).
+6. How to share secrets safely (separate read-only vs read/write Google docs) for new contributors.

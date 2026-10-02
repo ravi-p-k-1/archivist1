@@ -1,0 +1,50 @@
+{
+  "actions": [
+    {
+      "action": "Make a PR for the Cloudflare worker code that forwards meeting transcripts to the archivist repo",
+      "owner": "Ravi",
+      "due_date": "Not specified",
+      "evidence_excerpt": "I would need to make a PR for that.",
+      "speaker": "You",
+      "timestamp": "00:07:13"
+    },
+    {
+      "action": "Research how the multi-agent framework (Google ADK / AWS agent frameworks) can be fitted with Claude",
+      "owner": "Ravi",
+      "due_date": "Not specified",
+      "evidence_excerpt": "I can do some research on it and let's see how the framework can be fitted with Claude.",
+      "speaker": "You",
+      "timestamp": "01:11:06"
+    },
+    {
+      "action": "Check how to have a real-time chat/agent during the meeting using the live transcript",
+      "owner": "Ravi",
+      "due_date": "Not specified",
+      "evidence_excerpt": "I'll make a I'll make a check on how we could maybe have a real-time chat when we're in the meeting literally.",
+      "speaker": "You",
+      "timestamp": "01:12:29"
+    },
+    {
+      "action": "Send Ravi an email about the Claude Code CLI key-through-website info",
+      "owner": "Loren Heyns",
+      "due_date": "Not specified",
+      "evidence_excerpt": "I'll send this email about the Rest quad code CLI.",
+      "speaker": "Loren Heyns",
+      "timestamp": "01:45:51"
+    }
+  ],
+  "decisions": [
+    "Gary's schema/DB changes were merged and the Azure pipeline works; schema work is considered done.",
+    "Keep a full-rights 'exiobase provision host' connection (allows deletion) for a few admins, and make the web-facing connection read-only.",
+    "Merge CLAUDE.md into AGENTS.md and delete the CLAUDE.md file in the pipeline repo.",
+    "Using the Claude Code CLI subscription is acceptable as long as only the team member uses their own login and others cannot trigger it."
+  ],
+  "open_questions": [
+    "How to throttle the read-only API so it doesn't exceed Azure licensing limits or get overwhelmed.",
+    "How to get the live transcript to an agent in real time (append to a text file, Whisper output, or webhook/worker)?",
+    "Whether the Gemini API key populating issue and the removed Gemini model in the insights page are resolved.",
+    "Is there an existing 'add a bot to my call' tool that would avoid building this ourselves?",
+    "Whether SQL query logging in Azure is turned on (no entries shown).",
+    "How to share secrets safely (separate read-only vs read/write Google docs) for new contributors."
+  ]
+}
