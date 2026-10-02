@@ -1,0 +1,961 @@
+{
+  "webhookBodyType": "advanced",
+  "meetingSoftware": "Google Meet",
+  "meetingTitle": "Meet - xqa-iqtc-rxo",
+  "meetingStartTimestamp": "2026-10-01T23:04:03.888Z",
+  "meetingEndTimestamp": "2026-10-02T00:50:11.745Z",
+  "transcript": [
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:04:57.331Z",
+      "transcriptText": "So? "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:04:57.670Z",
+      "transcriptText": "Okay, it's turned on. Yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:04:59.530Z",
+      "transcriptText": "Awesome! So, yeah, Ravi's been creating ingestion process that we. Comparing with some of the other sites, the whisp wispo site is what I've been using locally, and it's been really effective. Um, at doing that summary out of the output. So? Vivek, do you want to still hang out for an hour, or do you want to regroup because I think? The questions you asked. I'm worried you'd kind of go in a direction that's not going to like. Like, there's old documentation out there. I want to make sure we, we don't have that. Lead. "
+    },
+    {
+      "personName": "Vivek Vasisht Ediga",
+      "timestamp": "2026-10-01T23:05:32.599Z",
+      "transcriptText": "Right? Uh, but for this meat, I just wanted to drop by and say hello, and to introduce myself. But yeah, and if I'm pretty sure that I would be having a lot of doubts once I'm done studying Ripple, and uh, I hope. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:05:46.009Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "Vivek Vasisht Ediga",
+      "timestamp": "2026-10-01T23:05:47.343Z",
+      "transcriptText": "them. And, yes, absolutely. And I can get down to work from tomorrow onwards. So, yeah, uh, I can talk about it more from tomorrow on. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:05:55.544Z",
+      "transcriptText": "Yeah, so start. Work the web root repo. You'll see. And there we have a. A a DOT or it's a git.sh file. You don't have to use that anymore. I've I've written the code to say ignore that, but that was our early version of interaction with GitHub pushing, polling, and all that. But now, get caught is just so awesome that you can just. I always just say, commit, and push. And Claude will always avoid like overriding Claude will help me merge so. All those things were things we had to write ourselves a year ago, and it's completely not needed now. So that makes life easier. Okay. But yeah, if you want to hang or just come back in, but I think I'm I will. I will wait to get to the opt letter. Just because we've had people come and go, and my policy became to like, just really get. A good level of commitment before we. You know, push that out there. So, next week, we'll aim. After the meeting, I'll get you get it to you. I think it's. "
+    },
+    {
+      "personName": "Vivek Vasisht Ediga",
+      "timestamp": "2026-10-01T23:06:53.184Z",
+      "transcriptText": "No worries. That should not be a problem. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:06:55.141Z",
+      "transcriptText": "Okay, cool. Hey Gary, welcome. And it's good to meet you Vivek. If you need to go, that's great. No worries, he's moving from. "
+    },
+    {
+      "personName": "Vivek Vasisht Ediga",
+      "timestamp": "2026-10-01T23:07:02.919Z",
+      "transcriptText": "Absolutely! "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:07:05.697Z",
+      "transcriptText": "So, Gary's our database guy and probably be the one that we end up documenting the most in this call. So, Gary, we are being transcribed by ravi's local transcriber. So, Ravi, are you using the one that you mentioned? What are? What was I'm trying to remember? Give me. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:07:24.822Z",
+      "transcriptText": "Um, that's right, I'm in the library, so I will not talk much, but um, just for the idea. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:07:30.086Z",
+      "transcriptText": "Okay. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:07:37.211Z",
+      "transcriptText": "So, the new extension will just, uh, record the Google captions. The Google meeting captions and we can use a web web hook like cloudflare for this to send it to the archivist repo and from archivist repo. The workflow is already set to. To convert it into action items. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:08:01.412Z",
+      "transcriptText": "So I didn't realize Google meetups had captions. How do I turn that on? "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:08:07.010Z",
+      "transcriptText": "Um, I, I think it's there. You can turn it on. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:08:12.046Z",
+      "transcriptText": "I. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:08:12.385Z",
+      "transcriptText": "Like? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:08:14.815Z",
+      "transcriptText": "Very nice. Okay, that's great. So then? How do you? Actually hook into those Cloud captions. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:08:27.212Z",
+      "transcriptText": "Oh, so it's not me. So I use the free extension. The extension will take the Google captions and the the extension provides. Help with webhook URL, so I, I just made a cloudflare worker and put the webhook URL in there. So, once our meeting ends, uh, the transcript will be sent to the cloudflare worker, and it will push it to archives archives repo. Yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:08:59.603Z",
+      "transcriptText": "So, it's a browser extension. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:09:06.350Z",
+      "transcriptText": "but, uh, yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:09:10.232Z",
+      "transcriptText": "I had a delay coming home because my dog had an accident on our front porch, so I was explaining. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:09:15.538Z",
+      "transcriptText": "Oh my God. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:09:16.691Z",
+      "transcriptText": "Yeah, but we got it under control. So? Is there? What is the name of the extension? "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:09:22.712Z",
+      "transcriptText": "Ah, yes, the name. I'll post it in the chat one second. I, this is the GitHub link of the person who made it. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:09:50.419Z",
+      "transcriptText": "Here, and I also sent you that Google extension. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:09:58.851Z",
+      "transcriptText": "Okay, so it is. It's kind of free. It's just kind of a made-up. Let's see. IEP Nfn C E I M J E H N. Is that it like that whole thing and then more, but "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:10:25.449Z",
+      "transcriptText": "God, that that's a link. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:10:26.782Z",
+      "transcriptText": "yeah, let me go like "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:10:31.747Z",
+      "transcriptText": "I, I did not know that. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:10:33.490Z",
+      "transcriptText": "We're just. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:10:37.754Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:10:38.455Z",
+      "transcriptText": "So, it's It's called transcript tonic. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:10:45.914Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:10:47.358Z",
+      "transcriptText": "Transcript, tonic one word. With no t in transcript. transcript, tonic The transcribers not getting it quite right, but we're close. okay, yeah, this is need because if we can If we, if you can document Like in the Readme, how I could. Just basically, I would install this extension and kick it off during the meeting. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:11:17.150Z",
+      "transcriptText": "Uh, yes, so I have already made the cloud cloudflare worker code and everything in the cloud cloud route the repo I would. I would need to make a PR for that. But yeah, I will let you know. Once the meeting ends, I will check whether it's being the transcript test being pushed to archive this report or not? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:11:39.372Z",
+      "transcriptText": "Okay, nice. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:11:40.421Z",
+      "transcriptText": "And then we can make that final beer. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:11:45.865Z",
+      "transcriptText": "Cool. So should we pivot over to talking about Azure and our trade flow? We can. Try to do some. Steps with Gary if he wants to try to. Work on anything specific. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:12:12.373Z",
+      "transcriptText": "Yeah, I did, um. Um. What's it called, like, merge those? Uh, you were a pull request. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:12:22.213Z",
+      "transcriptText": "Okay. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:12:23.005Z",
+      "transcriptText": "It works area. I had to make like a few changes to make it work, but Uh, it's. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:12:44.717Z",
+      "transcriptText": "Works in Azure. Nice. Yeah, cuz I got it running locally, so that's that's Updates and figure out how to The next thing I want to figure out how to throttle. A read-only API. So we can like, Pull it from the Cloud root repo. without overwhelming, or Exceeding, any of our Azure. Licensing limits, the the industry DB database can also be like Expanded with additional years. I'm voting talking because I just don't want to throw a lot of junk into the transcript. So I'd like to go through the steps. I'm going to go ahead and share my screen here. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-01T23:13:54.887Z",
+      "transcriptText": "By the video. The transcription is working really good. So, I don't think you would have to worry about talking slow, but not not too fast there. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:14:04.713Z",
+      "transcriptText": "Yeah, it's not that I'm wanting to talk slow. I just I normally talk and I just say a lot of stuff that is not really relevant to The conversation. Part of this is we're not really creating to do's in the process, but I want to get what I want to look at now is I'm going to pull open. Our Azure interface. I don't know. Gary, you want to you want to lead me in any specific direction or what do you What do you think? "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:14:44.193Z",
+      "transcriptText": "Yeah, I guess, let me think about, like? I guess it's? All those like we talked about, like schema changes for somewhere a database. Somehow, like the tables and stuff. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:14:58.866Z",
+      "transcriptText": "I think that's all done. That's the good. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:15:01.068Z",
+      "transcriptText": "Okay. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:15:03.609Z",
+      "transcriptText": "through. You know, just spent like three solid days getting that perfect. So It adds a year column and when it, you know, creates the industry database. And it it uses the index trade ID straight from axial base. So anyone In any any land in the world can start? And they could write their own script to do what we did, because there's like, basic rules. Because when I first did, I was kind of like, generating these random trade IDs that were based on, like, which countries selected first, you know, it was like, It was a wrong direction. I think so. Start. and what I want to do first is I'm gonna look at it like our process. in github of like how do you, how does someone get started using The xiobase repo here. And "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:16:11.540Z",
+      "transcriptText": "Okay, well, they're they're gonna need those. Like the file with all those secrets? Running under a local thing? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:16:19.158Z",
+      "transcriptText": "Yeah, that's exactly right, right? So I'm going to share my screen. Maybe we should look at our. secret sharing process and make it like, Accessible without like every secret, you know? Like we we basically would have two Google files, one where we have that The right, the read and write one. okay, so you mentioned there was you have a pull request for me to pull back "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:17:00.110Z",
+      "transcriptText": "No, I merged your pull request. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:17:02.693Z",
+      "transcriptText": "Okay, cool. So if someone just stumbles into the axio base, we don't have a readme here yet. You don't have one on your end. Says I'm one commit ahead of you so I have something else to send to you here. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:17:24.414Z",
+      "transcriptText": "It's like a common that changed. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:17:36.229Z",
+      "transcriptText": "The DB link information there so that's no big deal, okay. so, First, simple thing with just gonna get them to the trade flow. Folder. Because this is where so much exists. so, I'm thinking through that. Let's get into the Model Earth folder. Because that's the best overview there, right? So, Okay, did a little intro? so, step two is The getting started step. So we have this pipeline repo. And let's just go see what that looks like. So we haven't surfaced that maybe we should, but maybe it's better to just see it on Github. I used to think I needed to create a page for everything, but now I really enjoy just reading and editing on Github. Okay. So, this is basically all that the Azure instructions and eventually will have like a support for "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:22:49.708Z",
+      "transcriptText": "Well, this one doesn't, uh, for the database access that? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:23:33.074Z",
+      "transcriptText": "Right. Yeah, you're just gonna use the The secrets in the REIT in our Env file. But then I feel like we should part of this should be like if you're starting from scratch. You can you can have your own azure site, right? We don't need to do that today, but So this is a lighter here. Okay, so it's a setting up our managing Azure resources. Kemah. Start at Pipeline Azure. Or the automation script and its config. See Claude for architecture and setup cloudmd. Contour, I clicked it but I never saved the page. I was weird. I thought it like lunch another window. arranging these in the order so first we have There we go to the Azure setup. and now so Please schema. dB link permission setting, and for moving data between annual industry, So that's like a one-time. Setup. so now this is for set up and then Pipeline. And call it something like trade data. Dev or something like that, I don't know. Azure Setup Code Setup. so, We are currently providing. That azure postgres. Database, you can connect to. I'll just say team members coming anyways. So Gary, at some point, add like a Very basic. I mean, I'm sure we have it somewhere. We'll probably feels like it should be like I just assumed this script would do it, but It's probably set up steps. Sometimes this is, let's see. Her new databases. Here Azure config for New Azure. I think. We had like a URL to the actual. Azure. But do we want to avoid putting it here because it might get a lot of traffic. It's kind of like an open-ended The URL right now, right? It's like you could actually edit data through it, so that's not That might be something good to test. So let's actually test this idea of like a read-only interface. so, I'm gonna. Fire up my DB mod. in my I have like a file that I Use for like multiple web roots. so, "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:32:42.263Z",
+      "transcriptText": "I'm okay. I think we want to keep the delete. I think we just want one that's read-only. Basically, that should be like the main one that we've used in the past. and then I think we create one called provisioning and that's over it's okay if it deletes because it's pretty much just going to be You and me and one other person who have access to it. so, Getting my script that I run here. For the pipeline DB monitor. So, This is probably in the agents file already so let's go. Look at Yeah, is what I was looking at right here. Okay. So this needs to be like Step one. Tell your agent. We need to make this like more of like a Start something command. There's cloud root. I have this other thing I use, I tell it to always like make Readme files readable, because then you don't need like the local index.html. If you run this, like cloud root. But actually none of these are pythons. So I take that back. what we have here is, The node server for, Port 3700. And this is Dot Net server with 10. Okay, so I'm just going to make sure I have this. In this current condition locally here before I added it. so, looking at Where does this live? I don't know if I have. I guess it's right in the room, only, double jump. There it is. Okay. It's in my web route, the pipeline repo. So A kind of forget what? Okay, so I know, I don't do it, I want to glance at it. Before I edit it. There's another. So we have like a clot code. So, I wonder, I think I'm gonna just edit all this locally because I can, I'm gonna basically eliminate this clot MD file by copying. All of this into the agents file. Okay, like before I save anything, I'm gonna like pull The pipeline here. Okay. so, There's full. Okay, so I'm going to pipeline what's in the Sub Azure folder? I don't know, it's no pipeline. Okay. so, just give it the old pole, I had to so, I'll do pull first, I was gonna say with guidance from AGENTS.MD. But I haven't saved that yet. So pull the latest. Only change. The readme file. 13 lines are added. So now I'm going to Save the new agents file. And delete the cloud file. and I'll say, Use guidance in AGENTS.MD. Commit and push. And I'm kind of curious because I do this. one of my practices is always to say, Don't put Claude credits. So, I'm going to say that. Copy that. It actually have a nice nicely updated one. I'm okay with cloud credits, when Claude is doing all the work, but We're using caught as a tool, so it's just not fair to us. Human's. Those. That's not a rational. Concern. Help quite a bit, but Okay, so here I'm going to say start cloudroot. And this will call start. Your name, then I'll say start. I like the idea, but As you're because I'll remember that. And search for credit. So it only occurs once I think we're good. Here we go. So we're using guidance and agents.nd. And then we can say Start. Azure. And so, It's like at the start of it. It's going to start at Browser tab if it works correctly. Agents still ends, it's run section more details. We don't like that. Run section with sure. All right, so let's start azure. I am looking to see if it tells it to start it in an existing tab. In the local website on these ports. So there it is. Citizen book on these parts then run directly. With system. Do not require open up a brave. Yeah, Open a brave browser tab for each. And use. Existing tabs. So, how can we? Flow of text files, speak. How can we? Kind of have to come up with. A universal target somehow. Maybe the port number. Between. Say, we'll just call it. Target dash. Porch. To reuse existing tabs target Dashboard. Which could be a problem. If we, like, accidentally left some page, we had open, but Particular for running this because we don't have an open yet. We don't think we have an open yet. So if that becomes a problem, I guess we can just click the back arrow. Okay, so now we're in here. It's asking me to sign in. it remembers Loren there seems like there was like another one maybe Web and model Earth. And it doesn't remember that password? Experience, it wouldn't remember the past. Okay, so I guess I gotta go look in. Very are we using like us do we each we each have user accounts in this, right? Gary that uses your, your magical? A. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:42:18.010Z",
+      "transcriptText": "Yep. so, Let me go look at my files and see what I used as the name for this. Ravi you can. Well. there's, Do you have the Gary can give you the public URL and you could create an account as well? Do you have that Gary like the give that to Ravi but we're also we're also tightening it so that one Ideally, as our read only one. And that's, we're gonna try to. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:42:43.032Z",
+      "transcriptText": "So, let me just put it in the chat. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:42:45.065Z",
+      "transcriptText": "put in the chat but then let's figure out how to like lock it down and we can't Accidentally delete something. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:43:03.709Z",
+      "transcriptText": "Well, it's already, uh, you can't delete anything, uh? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:43:04.567Z",
+      "transcriptText": "Okay, he can but he can edit it right? Maybe. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:43:08.052Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:43:10.065Z",
+      "transcriptText": "So, even that prevent that. so, looking "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:44:33.443Z",
+      "transcriptText": "Then when I created to get into the azure, Site before. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:47:42.576Z",
+      "transcriptText": "So did you already share the URL? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:47:58.542Z",
+      "transcriptText": "okay, so I'll go there because this is probably where It might even remember. My password is probably what's gonna happen. It's gonna like Look it up and be like, Oh yeah, well remembers me, how about that? So, At this point. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:49:37.111Z",
+      "transcriptText": "Okay, so I'll enter one that I have documented here. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:52:58.843Z",
+      "transcriptText": "The one to continue to allow the deletion is the one called Exiobase provision host. So that one will still have the full rights. And then our web facing one is also the one wolf. We'll try to throttle it so someone can an overwhelm the database or I guess it's not a big deal but in most side environments we'd want to prevent "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:54:00.690Z",
+      "transcriptText": "Yeah, it's not good. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:56:06.818Z",
+      "transcriptText": "so yeah, rather than going to azure to approve them, we could have a I mean, this is one of those things that We should write in a way that we can use it with any backend. You know, let's get like really fun because Like today, I've been writing this calendar. Filter, but it's all like a JavaScript tool. So like, As it changes the URL, hash it's still interacts with a form. So it has like a solid Protective, you know. Area where you can't just randomly send values in. so, Like, I don't want to spend a lot of effort building the user admin piece unless there's something to start with and then we'll just throw it in place and That would be the best, the best way to approach it. Yeah. Yeah. So yeah. Like we'll be more like working towards, like one user admin interface that lets you Set persons permissions in multiple backends setting the permission in the Azure setup and other places too. So I'm sure there's some Microsoft thing but usually I don't know. It's like, I've been I downloaded this Cal.com. Thinking that'd be like a good one to use but it's it's a very cell. App. So I don't want to use it with the cloud root. and then, I got that off. setup that I was going to try to like, "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:58:44.370Z",
+      "transcriptText": "Yeah, that'd be, that'd be good. If you ever are. Inspecting to make sure you're not hacked. Then you want to look at all your SQL. Every query run is log click Activity. To search. Okay? So I don't know the wrong place, maybe you could link add a link over here. And no entries match. Let's go back. Maybe it's not turned on. Well, it's almost eight. It's been great. So tinker away and I think that I one idea is to have the ability to choose the connection and you would basically have the ability to choose the provision connection or The regular connection. and this way like our admin super users could just come in and, you know, maybe at the top here it's like How do you wish to interact with this? And that would let us still use this interface to do our deletions if we wanted to. But like, as a Default we would just go to the Xiaobase host. And part of me like design this in such a way that you could use it with any, any database, right? Like we shouldn't hard code xeo base. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:59:24.999Z",
+      "transcriptText": "Oh yeah, right now. Like, you can just click the new connection and then connect to, like, whatever database. You want and? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:59:34.652Z",
+      "transcriptText": "Okay, so this is good. So I'm gonna I got a manually, edit the "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:59:44.202Z",
+      "transcriptText": "It's just a placeholder so. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-01T23:59:48.166Z",
+      "transcriptText": "Connection string, right? Because like the format I have is Not in this format. I wonder what the fastest way to like transfer. What I have, I guess the Google Sheet the Google Doc might have Something like this. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-02T00:00:05.645Z",
+      "transcriptText": "Which database do you want to put there? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:00:11.264Z",
+      "transcriptText": "Guess it's the one we've already connected to. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-02T00:00:17.182Z",
+      "transcriptText": "Yeah, industry DB. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:00:18.763Z",
+      "transcriptText": "yeah, I want to industry DB but then I want to try the two different hosts, the What's the what makes them distinct? Because I currently have them both set to exactly the same So for Xiaobase underscore provision underscore host. "
+    },
+    {
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-02T00:00:39.847Z",
+      "transcriptText": "Yeah, let's the only difference there should be like. The user idea in the password? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:00:43.861Z",
+      "transcriptText": "Yeah, do we have that set already? Is that in the Google Doc? Don't you don't share it here, but let's What we should? Do is if we don't already have a Google Doc that's just me. And you One other person and then we'll Have the provision one there. Oh sure. Would that do like we'd have two connections here. Is. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:01:41.736Z",
+      "transcriptText": "Maybe I can help once. I'm done with making that PR. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:01:50.097Z",
+      "transcriptText": "Have the agent. As our fourth team member here. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:01:58.000Z",
+      "transcriptText": "Uh, by the way, there. There are a few new technologies. I'll just put it in the chat. It's Google adk endpoint. Agent. Trend engines. Uh, from AWS. Uh, so these are like multi-agent orchestration Frameworks. From two top companies. That we can use if we want to build an agent that is. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:02:36.111Z",
+      "transcriptText": "Does it have to be multi-agent? "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:02:39.069Z",
+      "transcriptText": "I mean. I, I just, uh. So, I went to that conference, and I learned about this technology, so I just just sharing it if. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:02:48.312Z",
+      "transcriptText": "Yeah, let's use it. I I've been watching YouTube videos about the math. I don't know the name of it, but the big math equation that they used like 10,000 agents and 80 hours. Of compute. And the fellow who orchestrated that open AI said it really wasn't so much the agents as it was the quality of Openai at this point. So he wasn't sure if 10,000 agents or four agents would have Made a huge difference. And then I did read some criticism that the quality of the the research writing was and was not very clear which is like surprising because you'd think that'd be like, the thing, the agents would just do really effectively like, And I don't know. I mean, it was, maybe the maybe the issue is actually that the theorem for the solving, this quite this challenge was so complex that it Wasn't possible to make it clear. but, Yeah, if you want to experiment, is this something you can set up as a worker? And we just have them appear in in our call here. Because it could just be like a "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:04:03.535Z",
+      "transcriptText": "There will be. There will be one issue, and that is, we need a API for this llm API. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:04:11.605Z",
+      "transcriptText": "well, we've got "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:04:13.063Z",
+      "transcriptText": "And it would be. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:04:13.744Z",
+      "transcriptText": "In the chat repo, we have a really nice process for managing all the LLM. So, what I'm thinking is that Your transcribing. This conversation. and so, your computer would basically be Sending the transcript in real time to an agent on your computer. And then we just our communicating with that agent. so, "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:04:42.278Z",
+      "transcriptText": "Are you talking about a new project or the current one? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:04:48.078Z",
+      "transcriptText": "think it's extending the current one and taking what you just "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:04:50.688Z",
+      "transcriptText": "All extend. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:04:52.313Z",
+      "transcriptText": "80. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:04:52.639Z",
+      "transcriptText": "Okay, so can you explain that idea again? Sorry. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:04:56.174Z",
+      "transcriptText": "Yeah, so you mentioned that you have this ability to do a multi-agent processing. which in, in general, it's like We're passing our transcripts to the LMS and whether it's one agent or multi-agent. we're saying, here's the, here's You know, the prompt could be, Here's a transcript from our meeting. Oh, it's occurring in real time. So that's the first challenge, right? It's a current in real time. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:05:25.466Z",
+      "transcriptText": "Oh. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:05:29.924Z",
+      "transcriptText": "next paragraph. You know, and just see where that takes you. I mean you know all of a sudden it's like this is like an open faucet to clot and Claude is Orchestrating with this other process. For what does ADK stand for agent? Okay. And is it, is it? For any agent. Can we use it with clot or is it just for Gemini? "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:06:04.341Z",
+      "transcriptText": "So we can like we can use it for any agent, but we need the llm API key. To use it, and it's basically it's paid so. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:06:16.716Z",
+      "transcriptText": "So, Gemini's free, right? And and just so you're familiar with what? I when I talk about the chat, I'm going to pull up the parasail version here, so if we go to model Earth Dot Ferriscell dot App, "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:06:36.800Z",
+      "transcriptText": "But Gemini has so less like. Uh. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:06:41.466Z",
+      "transcriptText": "Quality. Yeah. Yeah. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:06:47.043Z",
+      "transcriptText": "will would be the limit two or three prompts. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:06:51.128Z",
+      "transcriptText": "So we should just use ideally, we can use our local Claude code CLI and that that is actually supported. So Looking how we build this? there's ways to like, Do it with the, you know, the CLI versus the API account. But either way, it's like it's up to the individual. And we're paying for Claude. So it like if we can just use what we were already paying for that's the ideal. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:07:25.196Z",
+      "transcriptText": "Got? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:07:25.529Z",
+      "transcriptText": "Of the Jan Gemini is a good test case and then the latest element we've added here. Is that you can ask two agents a question and then there's a combined button where you could, you take the two responses and you process them as a third. So not super fancy but it just lets you kind of like compare the two and Create like a kind of a summary output, so that's in there. Now, on "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:07:51.223Z",
+      "transcriptText": "Okay. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:07:52.784Z",
+      "transcriptText": "On the chat. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:07:54.300Z",
+      "transcriptText": "One, one question, uh, how did you guys use Claude CLI in this? Like, how did you integrate Claude CLI in Earth's Escape? Since that is a website, and this is a CLI, it's different. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:08:14.099Z",
+      "transcriptText": "So, before I answer, I'm going to look, I'm going to look one more time at this keys page here. So go to going to the keys. You have the model? and then, We have anthropic. so for sure, the way I have it working is I go to my localhost I'm going to start the server here. Before I proceed but basically I'm using rust. This is still. so, "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:09:00.785Z",
+      "transcriptText": "Sorry, Lauren, you are being cut off. Your voice is not clear. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:09:04.925Z",
+      "transcriptText": "Sorry, can you hear me? Okay. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:09:08.452Z",
+      "transcriptText": "Uh, yeah, now it's clear. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:09:09.606Z",
+      "transcriptText": "Okay. so, I have to run it on localhost. I don't think we've ever made it work with veracell which makes sense, right, because it's just something that's right on the local user. Which should be okay for what we're doing here. So maybe instead of using this interface, we're going to use our team interface. So, I'm going to start. The. Eight eight seven Web report. So I'll say start. It's almost done. So when I when interesting, so it's actually starting rust as well. I'm thinking. It's probably gonna have me go to clot and get like some kind of a key for this to work. So we'll see where it leads us. And I do think this is the right interface to use for this idea. So, let me reload this again. So that's up now. so, in this environment, We've got a partner tools. Change from Georgia. To model Earth. and then from here, It's just Well, the first one. So on the side here, you see where it says insights? I have four agents listed. So I'm current like the way this is built. Like We can choose. A data set in one of the data sets is like our Google sheet that has our team members in it. But what we could do is have this list. And choose the like live Meetup, which we've very cool. So, like, we're in the Meetup. We just say, like, live meet up and it utilizes this extension we're using right now to Get us the transcript somehow. and so in this example though, I'm going to choose Claude and so, It says the default is called code CLI and I'm assuming it, it has the keys for all these, that's why it has the four there. Before I do this live, it doesn't show anything because there's no keys. okay, so it is using You can store the key in your browser cache. That's how we could pull it off with a live one, basically. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:12:28.995Z",
+      "transcriptText": "Api key, right? This is. Um. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:12:32.114Z",
+      "transcriptText": "It's called, right? "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:12:33.829Z",
+      "transcriptText": "Cloud code CLI subscription literally! "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:12:36.176Z",
+      "transcriptText": "Yep. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:12:37.051Z",
+      "transcriptText": "Okay. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:12:38.115Z",
+      "transcriptText": "and then, Obviously, the default tell me amazing opponent about this data. I'll say spend minimum effort. Spend minimum effort and only analyze five rows. And then click Get Insights. Okay. So now it's telling me it failed. The credit balance is too low. So, I guess it tried to use an API key. Please go to plans and billing. To upgrade or purchase credits. So blue did it. Actually, I'm gonna go look in the Env file to see if. Well, as a quick, as a quick test. Let's try to Gemini one here. so it saved the last one it says, Oh so here, it's like It's not finding it. So I think what happened was I moved the Env file in the last couple weeks we've got this new Paths that points at it. So probably. Doesn't find that we need to see more informative. I'm just out of curiosity, I'm gonna Key and paste it here. Okay, so now it has my Gemini key in the This model is no longer available. Some work is Is needed. So Like that could share the same list that we use to show the models on the other page. so, "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:15:10.420Z",
+      "transcriptText": "I can do some research on it and let's see how the framework can be fitted with Claude. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:15:17.100Z",
+      "transcriptText": "Yeah, try it. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:15:18.211Z",
+      "transcriptText": "Multi-agent framework yeah! "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:15:20.294Z",
+      "transcriptText": "And I would encourage you to try to, you know, expand on this rust endpoint process. but then again, like if some for expecting people to run this on their local machines, What's the what's the path of least resistance? Do most people want to run Python, I don't know, I don't know. Well, I don't know Python's, okay because are you are utilizing Python. Now as you're back, end kind of "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:15:46.926Z",
+      "transcriptText": "Yeah, I, I. I'm kind of fishing to Python. It's like all the llm kind of work is being done in or something. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:15:55.829Z",
+      "transcriptText": "yeah, mostly and the rest is just what you Use, If you had like a very high-end website, you needed speed. But the rest is also ideal to utilize with these lambda. Serverless, endpoints. And then the python would run in the lambda so we're still using Python but we're not. Using it on the Web server directly. I don't know. Rest is like a I guess we could use rust in the the lambda though. Actually anyway, so either or either or or.net or node "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:16:33.829Z",
+      "transcriptText": "Okay, I'll make a I'll make a check on how we could maybe have a real-time chat when we're in the meeting literally. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:16:44.211Z",
+      "transcriptText": "and let's spend like, Five more minutes here. I'm going to try to vibe code how to use the Cloud code CLI. because I think, the anthropic key was our like, Our barrier here. And I did have this working. I don't know eight months ago. I think So you're welcome to you can hang to see what kind of progress I make here. so, I'm going to go to the Webroot Using Guidance in AGENTS.MD. I'd like to use my quad code, CLI key instead of the anthropic key. Okay. Option. So what a moment called. Entropic API Key. it might already be so say something, like, Might already be the correct key. And some other factor is returning, the message. And then I'll reproduce this message. Get insights. I wonder if there's some way that you could let people get this key. Because you got to figure like 80 to 90 to 95% of developers have the Cloud Code CLI and not the API key in general because the API key is more like like a website back in. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:20:13.004Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:20:15.114Z",
+      "transcriptText": "if we just let people like grab their code CLI Key and use it through a website, like, You get a lot of people that would try that. I think it was useful. I don't know. It's risky. Like I don't "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:20:29.705Z",
+      "transcriptText": "It's kind of some kind of legal issue when you use Claude oauth. In, like, not through the chat. But like? So other means, it said, only it's illegal or something. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:20:43.010Z",
+      "transcriptText": "Oh yeah, that makes sense. So they that's probably what they were on. I guess it's you know one reason to make it illegal is you can just kind of max out all these hours Because you have like a Big block of time for the $20 or $200 per month. I think is what like a lot of Companies, end up paying for their employees. And then like if you're really valuable employee, they give you $1,000 a month of tokens, right? I cannot imagine ever being able to use that many. Plus, I was really inefficient. Alright, so I'm getting some feedback. I threw in this other window because I was like what? If it throws a key up here but I don't think it did, but There's like an API key and it's doing a lot of work. I still don't trust it not to show my key that's like It'll come back and start saying, Oh, you got to change your your API because I accidentally talked and I put in the chat. No, no, no. I didn't do that this time it. Okay, so what's it coming up with It's testing it. It says it fixed it so we maybe get some new it started. Press or someone hit refresh here. Click on Crowd. And just get insights, it's working. Alright, so here's what I had to say. It now runs your cloud code CLI login. Instead of your needing to use your API credits. So maybe it just I don't know how winter, why it got changed to do that, but I feel like we should have a separate API key for the two or. No, I don't know. I guess it's still the same anthropic API key. This is gonna be interesting. It's actually works. Let's keep reading here. Your key wasn't the problem, the option only had Cloud Code CLI in its name. Okay? The page sent exactly the same request. But for both. Okay, so here we go. Whoa. It says, 117 rows. So this is like poetry about us. from Austin out to Boston Pullman's Wheat, in Raleigh Tampa and the Delta Dallas Heat so I said Well, because I was like, I'm used to only using 50 rows. Oh, here it is. So 50 rows. Analyzed from a data set of 117, so it kind of like misled us with that title. Okay, back to understanding what was going on. So, it has to include key source CLI. I'm gonna, I'm gonna send this to you in an email ravi, so you have it. so, let's ask Claude if this is Legal to do. Just say. Rules against using this technique through a website. It's using this technique through a website. Okay. Request reports about 23k prompt tokens. Because account includes a cli's own system prompt. That ain't much say push team when you want to. Okay, so Gosh, I don't know. I'm gonna first push and then I'll ask. So let's see. Copy. I'm scared. Control C. Push team. so, When it says Save changes here, it just saves it in the browser cache but I think that's always fun because then I can come back and see it later. And I can try like the Gemini one. Okay, let me try that. Maybe the Gemini one will. How come the Gemini one is not finding. It's API key. I don't know. Okay. It says Yes, there are rules. Your current setup is fine. As long as you're the only person using it. Oh, okay. That works. It breaks the rules. Once anyone else can trigger it. so, You on your own machine with your own subscription. These rules don't prevent an end user from signing into an unmodified cloud code binary with their own cloud subscription. so I think it's going to be okay if we can, if we always use our own Cloud Code key. We don't we're not letting other people use it. That's true. that, I mean, I think that makes sense because who knows, like, what's the difference between a laptop and like a lot of people are utilizing like, these little virtual machines, they'll fire up through like Crock-Pot. So, so, is I'm gonna say, Is a Gemini API, key accessible. so, this I'll say, don't show it here. and I'll say we're not using A docker. Sub module. Because in this, this could still be pointed at the At the doctor one. So, I've moved a bunch of other stuff to use a new like the ideas that there's like a Storage place for the API keys that's external to the website folder. So we don't actually accidentally ever Commit, or Access via the agent. Is the, this is accessible and Current. You know, move it. So we don't show it. And this is asking me to save the key. So, The rest API, don't use docker. Docker Still sub module. Okay, so maybe this is part of the design. Well, so why doesn't? I'm gonna get this field name. Why isn't the Gemini API key being populated in? App Key. That's trying to use browser storage. It says Okay, so I think it's going to fix it. I'll keep tinkering in that regard. I think the Gemini in the cloud will both work in this. Setup. So we have the free junk in Gemini. We have our high quality clod The access to that extension in a way. Like, Are you thinking like Looking, when you use the extension, does it save a text file locally? As a, as a as I speak? So, you "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:33:16.144Z",
+      "transcriptText": "Okay, so it does two things it can either save the text file or it. It can use a web hook to send it to a cloudflare worker.  And the cloudflare worker will send it to the archivist repo. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:33:37.901Z",
+      "transcriptText": "So in real time, if we want to have it, Available to the Cloud Code interface. Well, we don't need to send it to the worker unless the worker is running locally. What was the first option? We can just save it to a text file. You said, Can we do that incrementally as we talk? "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:34:04.526Z",
+      "transcriptText": "Maybe maybe what we can do is we can create our own extension and have chunks chunks of transcript be sent to the Claude Claude or check GPT behind the scenes, and it gains with a real-time chat. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:34:25.732Z",
+      "transcriptText": "yeah, I'm sure it's been done many times before, and maybe we don't even need to send chunks, we can just tell the agent where to look and just like worse, we watch our own closed captions moving like, Like, I almost think we're overthinking it. This idea of like, chunks. Look. What if we just say, like here's a text file that we're just appending the conversation to And just read it at your own free will. Right? Like And so, then Claude would be like, you know, give me the next 20 lines and it would just keep coming back to it. when it was ready to digest it, It's I'm sure there's there's probably like some cool like Rock bots that you can just invite to your call. Right? Like Are we inventing the wheel that's already been invented? Like Is there just an easier way to do this. Like There might be an extension that is like Add a use, Add a bot to my call. which is pretty much, you know, at the start of this call I I kick I kick off the other bot that Was that your bot? No, some maybe it was your butt. So we have the old, I think it's the otterbot that's still comes automatically and I'm like, I'm not using it, so I don't want it. But I guess what? This is. Kind of like an even It's a lot more, like the Process. We have going with whisper, which is like it's just running on my local machine. Maybe Whisper could save a file too, that's the other option. Like you think that Whisper could send a text file maybe in real time? That'd be something we could look at I do like the idea of you know, actually trying to That you're actually writing something. Because I think it's like Gets us a lot more flexibility. Because I guess that part of it would be like Agent is reading. Agent is looking at the webroot folder. Which has all of our repos. and agent can then participate and maybe we end up with Five agents, and each of them is focusing on different things. Possibly sharing. Browser sessions. Because I've As I've vibe code often with Claude it's you know, opening a browser and inspecting and It feels like a very separate process like it doesn't I never feel like Claude is like saying Hey look at something in the browser. It's like Clot comes back and says I looked at this and found this and But if Cloud is actually sharing like, you know, If I said like open reality stream and it just went and went there you know, like it just knows that this is what I'm talking about. That seems like. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:37:28.292Z",
+      "transcriptText": "Maybe we can, maybe we can do something like, uh, when we do send, uh, like chunks of our captions, like the transcript in real time, we can have agent listen to our conversation and? And show related resources in like a sidebar, and I think that we would need to use an extension for that, so that so it's visible to us. Or if you want, we can do it locally too, so. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:37:56.068Z",
+      "transcriptText": "But doesn't need to be a sidebar. It would just be like your sharing your screen. So we would see Ravi in the call and then Ravi's screen is just driven by the agent. By your. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:38:08.347Z",
+      "transcriptText": "We can do that so I can have the application run locally, and it will show us related resources on what we are talking about. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:38:18.403Z",
+      "transcriptText": "Right. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:38:21.152Z",
+      "transcriptText": "reality stream, then it should give us a link to the open reality stream or related resources. Like that? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:38:28.791Z",
+      "transcriptText": "Yeah, that's perfect. And then what I have right now is a I have like, Let's say I like 10 Web roots and I have one script that I just have them all this tabs. So At the start of a call. we have this capability to like, Initiate tabs that are ready and waiting and maybe we just do one tab for all like, say seven main components, reality stream. And everything else we're doing, you know? So they're just like ready to roll and that's part of the, you know, I'll set that up as like an agent's MD process, that lets the The agent, the multiple agency. This is where it would be. If we can, if we can think about, I like that this just one screen being shared and that, that screen. Is utilizing tabs. Right? So but like you know you think about what we have here. Oops. I'm drawing on the screen. We have like a browser that has. Let's say 10 tabs open but, We go full screen and then we just say Hide the tabs, right? So Always show, toolbar. There you go. Okay, so basically this is the experience of like what I'm getting at is, I want this to feel like an intelligent monitor like an intelligent you know, screen that you're interacting with and not a browser experience and so, We'll, we'll come away with like we're jumping between tabs or we're actually. Either open, a new pages, blah blah. But it's all like one browser one. You know, we may have like, 50 tabs, we want to avoid that. But that that's the idea because I think what what we end up with is like a really cool interface that this could become like something that's like a public kiosk. Right? You come up and you talk to it. But you're also in the call you see? So you're and this this is like "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:40:39.819Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:40:41.278Z",
+      "transcriptText": "This is what I want to like, try to develop this the next few years. For senior parents to, you lies for old folks who Want to watch, you know, movies or thing. You know, just like people cannot use Google Hub to do these. Like, Much more interesting levels of interaction. but so here we are like "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:41:02.528Z",
+      "transcriptText": "I think I think this is more scoped like this is for organization and not for like the common common usage. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:41:12.764Z",
+      "transcriptText": "Not well. So the name you just said is perfect, Commons, right? Like hold on to that thought because I'll show you what I've got going here. so, "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:41:23.319Z",
+      "transcriptText": "Common usage. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:41:24.472Z",
+      "transcriptText": "I call it. Desktop folders Commons. Okay, so I have this, I started this. last week, so first I was going to call member sense and remember something that It's very simple but it's this idea that it's like your desktop. It's like a folder. That you're running your cloud code in but then it has all these features to it. And it util instead of like flooding it with all these sub modules, like the Web roots have right now. Everything is kind of like this, you some almost like pull it in when you need it. And I'm doing this. Because I've been meeting with people that Run the the building. I'd say, like, cut the relationship with all the people in the building where I lived, where I worked near Georgia Tech, and there's like, 4,000 people have accounts so, I'm trying to think of like, In addition to that ecosystem, there's two other ecosystems in the building where there's a bunch of membership accounts. So I'm trying to mash all this together but then I want to put it into like an environment where you're communicating with a screen. Which really can be any laptop, right? But what you're saying? Is where we're at now. But like, I don't think there's any reason why we couldn't get to the point where the, the dialogue was Intelligently led like, you know, Claude could open a YouTube channel. For example, the reason it becomes like open claw, right? And with open claw, like you still want to have like this level of Harnessing provided by Claude or some other technique. it's very scary because you could say, like, I don't want to say it like, delete, blah, blah blah, right? You could do some really damaging stuff. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:43:28.265Z",
+      "transcriptText": "one of the features, though, if you look in support here in this, like Commons Is whenever it's invoked. It automatically does a sandbox. So, it automatically uses Python. To attempt to like shield it, right? So that's part of the natural, like setup process. Right. That's triggered by the agents MD. so, "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:43:51.362Z",
+      "transcriptText": "Maybe just, you know, like, read, read, write, only, like? Um. The the permission is to read only. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:43:59.855Z",
+      "transcriptText": "Right? That's perfect because it's it doesn't really need to store anything. Or do any. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:44:05.716Z",
+      "transcriptText": "I think, for, for this, maybe we can use the knowledge base we created using Pinecone? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:44:11.938Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:44:13.062Z",
+      "transcriptText": "So, so when we are talking? The, the LLM or the agent can access the pine cone vector database and fetch similar similar resources. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:44:26.827Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:44:27.507Z",
+      "transcriptText": "For us. And it saves us the time to create the database because we already have. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:44:37.938Z",
+      "transcriptText": "Yeah. We'll have to retrain the vectors occasionally. There's, it's a good mix because the Readme files and In many situations, you'd still. Pull the most recent readme because it's going to get outdated and this is kind of why I think rock is really good for research because Grac always grabs like the 30 articles and it's got Twitter and all that XI. And Claude. you know, is much safer because it has all these like agent harnessing like Don't do this, you know, it's just Rock doesn't have anything to. I mean, it has minimal. compared to Claude, you know, so, Like, I wouldn't trust any other agent, but Claude to be the one orchestrating this process. And just think it could misinterpret requests. But then again, Open clause like been propelled. Have you, have you seen or learned anything about OPENCLOUD in any Anything squirt, please. You've gone to "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:45:44.765Z",
+      "transcriptText": "So when I, when I went to the conference, there was nothing about open clock, but there were similar competitors. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:45:51.764Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:45:52.778Z",
+      "transcriptText": "They are. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:45:53.112Z",
+      "transcriptText": "and I, "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:45:57.862Z",
+      "transcriptText": "For laptops and stuff, and not just, you know, not just one laptop. It's basically one nlm, but through two laptops. So your laptop and my laptop? "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:46:12.049Z",
+      "transcriptText": "Hmm. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:46:17.369Z",
+      "transcriptText": "those laptops. Kind of a unique idea. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:46:20.841Z",
+      "transcriptText": "Yeah, I think that's what the satellite network is going to do as well. As I think it's all distributed. and then, Yes, it goes back to what you're sharing about multiple agents because like you kick off a process and you're Comparing notes between all these agents? So there's no reason for them to be on one processor. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:46:46.758Z",
+      "transcriptText": "And, and people are going from creating software using CLI, and they're going from there to having multiple agents working in a factory and creating software.  So, that's basically a software Factory. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:47:07.688Z",
+      "transcriptText": "Yeah, that's cool. So I "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:47:09.396Z",
+      "transcriptText": "So now, like 5 or 20 agents, some something working together to make. To make an application. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:47:17.084Z",
+      "transcriptText": "right, we just need to give up now and we're learning it but we really because we're not even doing things like that, like we're already just We're like, you know, we're only a month behind the curve, but it feels like we're really outdated, you know, but, "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:47:33.195Z",
+      "transcriptText": "Yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:47:33.695Z",
+      "transcriptText": "I wonder. we Should, You know, Let's one of our goals should be to try to use this off-site server and run some of these processes, because I think, it's gonna be easier to collaborate in that regard to because it may have like, you know, very current information but the Github repo environment, we we work in is like I feel like it's like A really important edge to teach people because people are, like, I'll just try to do this inside some third party tool and it's like, no, just do it locally and push it somewhere. So I this is the open clock equivalent that Nvidia has. It's called Nemo claw. I guess everyone's building on the The Crab and the Claw. Metaphor. and then, like, what would Would ex say I have an equivalent to the I was gonna say version of those equivalent. I mean that would just be the Crock-Pot. Is proprietary, so it doesn't run on your machine but I guess the Nemo claw would run on any any laptop. So, on my machine, I have It's a new and I finally got a new Mac, it's four five, six months ago and I it's got the GPUs that maybe I don't know. They're not in the video GPUs or the Apple silicon but It could potentially do things that I couldn't do before. It's graphical. User interface. All right. Well, let's call it a night and "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:49:40.410Z",
+      "transcriptText": "I will let you know, uh, once I get the transcript, and it's like posted to the archivist, uh, allowing make the pr. Yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:49:50.105Z",
+      "transcriptText": "Okay. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:49:51.050Z",
+      "transcriptText": "There are a few more things to work on a little bit, but yeah. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:49:55.015Z",
+      "transcriptText": "I'll send this email about the Rest quad code CLI. Info, if you need to try to duplicate that, Okay, cool. "
+    },
+    {
+      "personName": "You",
+      "timestamp": "2026-10-02T00:50:05.106Z",
+      "transcriptText": "Okay. "
+    },
+    {
+      "personName": "Loren Heyns",
+      "timestamp": "2026-10-02T00:50:05.717Z",
+      "transcriptText": "Thanks guys. Bye. See, you Gary. See. "
+    }
+  ],
+  "chatMessages": [
+    {
+      "chatMessageText": "I am in the library actually so I will be messaging in the chat.",
+      "personName": "You",
+      "timestamp": "2026-10-01T23:07:16.903Z"
+    },
+    {
+      "chatMessageText": "Hey Gary! Nice to meet you",
+      "personName": "Vivek Vasisht Ediga",
+      "timestamp": "2026-10-01T23:07:45.909Z"
+    },
+    {
+      "chatMessageText": "Hey, Nice to meet you too",
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:08:04.394Z"
+    },
+    {
+      "chatMessageText": "Ill drop for now, but will keep in touch wrt developments",
+      "personName": "Vivek Vasisht Ediga",
+      "timestamp": "2026-10-01T23:08:05.527Z"
+    },
+    {
+      "chatMessageText": "https://github.com/vivek-nexus/transcriptonic",
+      "personName": "You",
+      "timestamp": "2026-10-01T23:09:42.747Z"
+    },
+    {
+      "chatMessageText": "https://chromewebstore.google.com/detail/transcriptonic/ciepnfnceimjehngolkijpnbappkkiag",
+      "personName": "You",
+      "timestamp": "2026-10-01T23:09:52.667Z"
+    },
+    {
+      "chatMessageText": "https://model-earth-pipeline-dnfmg3febdhvd8ag.westus2-01.azurewebsites.net/",
+      "personName": "Gary Martirosyan",
+      "timestamp": "2026-10-01T23:42:47.835Z"
+    },
+    {
+      "chatMessageText": "got it",
+      "personName": "You",
+      "timestamp": "2026-10-01T23:42:57.461Z"
+    },
+    {
+      "chatMessageText": "Google ADK 2.0 and Strands Agents from AWS",
+      "personName": "You",
+      "timestamp": "2026-10-02T00:02:18.376Z"
+    }
+  ]
+}
