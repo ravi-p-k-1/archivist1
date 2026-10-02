@@ -1,81 +1,41 @@
-"""Filesystem lifecycle for transcript processing."""
+"""Output and archive lifecycle for the JSON transcript pipeline."""
 
+import json
 import os
 import re
 import tempfile
 from dataclasses import dataclass
-from datetime import date
 from pathlib import Path
-from typing import Protocol
 
-from .evidence import verify_evidence_excerpts
-from .models import ActionReport
-from .render import render_report
-
+from .evidence import verify_report_evidence
+from .models import ActionItem, ActionReport, ReportSubmission
+from .render import render_report, render_report_json
+from .transcript import SOURCE_NAME, ProcessingError, Transcript, compact_view
 
 MODEL_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 
 
-class ProcessingError(RuntimeError):
-    """A safe, user-facing processing error."""
-
-
-class Extractor(Protocol):
-    def extract(self, transcript: str) -> ActionReport: ...
-
-
 @dataclass(frozen=True)
-class TranscriptPaths:
-    source: Path
-    output: Path
+class OutputPaths:
+    output_txt: Path
+    output_json: Path
     archive: Path
-    meeting_date: str
-    source_name: str
 
 
-def resolve_paths(root: Path, transcript_path: Path, model: str) -> TranscriptPaths:
-    """Validate the Phase 0 path contract and derive output/archive paths."""
-
-    root = root.resolve()
-    source = transcript_path.resolve()
-
-    try:
-        relative = source.relative_to(root)
-    except ValueError as exc:
-        raise ProcessingError("Transcript must be inside the repository root.") from exc
-
-    parts = relative.parts
-    if len(parts) != 4 or parts[0] != "transcripts" or parts[3] != "transcript.txt":
-        raise ProcessingError(
-            "Transcript path must be transcripts/<date>/<source>/transcript.txt."
-        )
-
-    meeting_date, source_name = parts[1], parts[2]
-    try:
-        parsed_date = date.fromisoformat(meeting_date)
-    except ValueError as exc:
-        raise ProcessingError("Transcript date must use YYYY-MM-DD.") from exc
-    if parsed_date.isoformat() != meeting_date:
-        raise ProcessingError("Transcript date must use YYYY-MM-DD.")
+def resolve_output_paths(root: Path, meeting_date: str, model: str) -> OutputPaths:
+    """Validate the model name and derive this meeting's output/archive paths."""
 
     if not MODEL_PATTERN.fullmatch(model):
         raise ProcessingError(
             "Model must be a filesystem-safe lowercase name containing only "
             "letters, numbers, dots, underscores, or hyphens."
         )
-
-    meeting_sources = list((root / "transcripts" / meeting_date).glob("*/transcript.txt"))
-    if len(meeting_sources) > 1:
-        raise ProcessingError(
-            "Phase 1 supports only one transcript source per meeting date."
-        )
-
-    return TranscriptPaths(
-        source=source,
-        output=root / "output" / meeting_date / model / "action-items.txt",
-        archive=root / "archived" / meeting_date / source_name / "transcript.txt",
-        meeting_date=meeting_date,
-        source_name=source_name,
+    root = root.resolve()
+    output_dir = root / "output" / meeting_date / model
+    return OutputPaths(
+        output_txt=output_dir / "action-items.txt",
+        output_json=output_dir / "action-items.json",
+        archive=root / "archived" / meeting_date / SOURCE_NAME / "transcript.json",
     )
 
 
@@ -102,25 +62,10 @@ def _write_atomic(destination: Path, contents: str) -> None:
             Path(temporary_name).unlink(missing_ok=True)
 
 
-def _archive_source(paths: TranscriptPaths) -> None:
-    if paths.archive.exists():
-        raise ProcessingError(f"Archive destination already exists: {paths.archive}")
-    paths.archive.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        paths.source.replace(paths.archive)
-    except OSError as exc:
-        raise ProcessingError(
-            "The report was written, but moving the transcript to archived/ failed. "
-            "Run the same command again to retry archiving."
-        ) from exc
-    _remove_empty_transcript_directories(paths)
-
-
-def _remove_empty_transcript_directories(paths: TranscriptPaths) -> None:
+def _remove_empty_transcript_directories(source: Path, transcripts_root: Path) -> None:
     """Remove empty source/date directories without removing transcripts/."""
 
-    transcripts_root = paths.source.parents[2]
-    for directory in (paths.source.parent, paths.source.parent.parent):
+    for directory in (source.parent, source.parent.parent):
         try:
             directory.relative_to(transcripts_root)
         except ValueError:
@@ -132,39 +77,96 @@ def _remove_empty_transcript_directories(paths: TranscriptPaths) -> None:
             break
 
 
-def process_transcript(paths: TranscriptPaths, extractor: Extractor | None) -> Path:
-    """Process one transcript, write its report, and archive it after success."""
+def _archive_source(transcript: Transcript, archive: Path) -> None:
+    if archive.exists():
+        raise ProcessingError(f"Archive destination already exists: {archive}")
+    archive.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        transcript.source_path.replace(archive)
+    except OSError as exc:
+        raise ProcessingError(
+            "The report was written, but moving the transcript to archived/ failed. "
+            "Run finalize again to retry archiving."
+        ) from exc
+    transcripts_root = transcript.source_path.parents[2]
+    _remove_empty_transcript_directories(transcript.source_path, transcripts_root)
 
-    if not paths.source.is_file():
-        raise ProcessingError(f"Transcript does not exist: {paths.source}")
 
-    if paths.output.exists():
-        if paths.output.stat().st_size == 0:
-            raise ProcessingError(f"Existing output is empty; refusing to archive: {paths.output}")
-        _archive_source(paths)
-        return paths.output
+def write_prepare_artifacts(transcript: Transcript, prompt_md: str, archivist_dir: Path) -> None:
+    """Write the compact view, schema, and prompt that prime extraction."""
+
+    prompt_text = (
+        f"{prompt_md.strip()}\n\n"
+        "The meeting's compact transcript view is at .archivist/view.txt. "
+        "Read it, then submit your report."
+    )
+    _write_atomic(archivist_dir / "view.txt", compact_view(transcript))
+    _write_atomic(
+        archivist_dir / "schema.json",
+        json.dumps(ReportSubmission.model_json_schema(), indent=2),
+    )
+    _write_atomic(archivist_dir / "prompt.txt", prompt_text)
+
+
+def finalize_report(
+    report: ReportSubmission | None,
+    transcript: Transcript,
+    paths: OutputPaths,
+) -> ActionReport | None:
+    """Render outputs (if needed) and archive the source transcript.
+
+    If the output files already exist from an earlier run that wrote them
+    but failed only at archiving, this retries just the archive step and
+    returns None - no report is needed for that recovery path.
+    """
+
+    output_complete = paths.output_txt.exists() and paths.output_json.exists()
+    output_partial = paths.output_txt.exists() != paths.output_json.exists()
+    if output_partial:
+        raise ProcessingError(
+            f"Existing output at {paths.output_txt.parent} is incomplete; refusing to proceed."
+        )
+    if output_complete:
+        _archive_source(transcript, paths.archive)
+        return None
 
     if paths.archive.exists():
         raise ProcessingError(f"Archive destination already exists: {paths.archive}")
+    if report is None:
+        raise ProcessingError(
+            "A validated report (.archivist/report.json) is required to create a new output. "
+            "Run verify first."
+        )
 
-    if extractor is None:
-        raise ProcessingError("An extractor is required when creating a new report.")
+    verify_report_evidence(report, transcript)
+
+    final = ActionReport(
+        actions=[
+            ActionItem(
+                action=action.action,
+                owner=action.owner,
+                due_date=action.due_date,
+                evidence_excerpt=action.evidence_excerpt,
+                speaker=transcript.by_id[action.entry].speaker,
+                timestamp=transcript.by_id[action.entry].elapsed,
+            )
+            for action in report.actions
+        ],
+        decisions=report.decisions,
+        open_questions=report.open_questions,
+    )
 
     try:
-        transcript = paths.source.read_text(encoding="utf-8")
-    except (OSError, UnicodeError) as exc:
-        raise ProcessingError("Transcript could not be read as UTF-8 text.") from exc
-    if not transcript.strip():
-        raise ProcessingError("Transcript is empty.")
-
-    report = extractor.extract(transcript)
-    verify_evidence_excerpts(report, transcript)
-    rendered = render_report(report)
-
-    try:
-        _write_atomic(paths.output, rendered)
+        _write_atomic(paths.output_txt, render_report(final))
+        _write_atomic(paths.output_json, render_report_json(final))
     except OSError as exc:
         raise ProcessingError("The output report could not be written.") from exc
 
-    _archive_source(paths)
-    return paths.output
+    _archive_source(transcript, paths.archive)
+    return final
+
+
+def write_summary(summary_lines: list[str], archivist_dir: Path) -> None:
+    """Write a short Markdown summary for the PR comment."""
+
+    _write_atomic(archivist_dir / "summary.md", "\n".join(summary_lines) + "\n")

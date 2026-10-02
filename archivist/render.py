@@ -35,3 +35,9 @@ def render_report(report: ActionReport) -> str:
     lines.extend(["OPEN QUESTIONS", "", *_render_numbered(report.open_questions), ""])
     return "\n".join(lines)
 
+
+def render_report_json(report: ActionReport) -> str:
+    """Render the same report as indented JSON, for later ingestion."""
+
+    return report.model_dump_json(indent=2) + "\n"
+

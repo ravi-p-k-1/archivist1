@@ -1,17 +1,14 @@
 name: Process transcripts
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "transcripts/**/transcript.txt"
+  pull_request:
+    types: [opened, reopened]
+    paths: ["transcripts/**/transcript.json"]
   workflow_dispatch:
     inputs:
-      model:
-        description: Claude model alias or model ID
-        required: false
-        default: sonnet
+      pr:
+        description: "PR number to reprocess"
+        required: true
         type: string
 
 permissions:
@@ -19,21 +16,48 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: archivist-transcript-processing
+  group: "archivist-${{ github.event.pull_request.number || inputs.pr }}"
   cancel-in-progress: false
 
 jobs:
-  process-transcripts:
-    name: Process pending transcripts
+  process:
+    name: Process the pending transcript
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.head_ref, 'cloudflare/')
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
 
     steps:
-      - name: Check out the repository
+      - name: Resolve PR number and head ref
+        id: pr
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            NUMBER="${{ inputs.pr }}"
+            HEAD_REF=$(gh pr view "$NUMBER" --repo "${{ github.repository }}" --json headRefName -q .headRefName)
+          else
+            NUMBER="${{ github.event.pull_request.number }}"
+            HEAD_REF="${{ github.head_ref }}"
+          fi
+          echo "number=$NUMBER" >> "$GITHUB_OUTPUT"
+          echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+
+      - name: Check out the PR branch
         uses: actions/checkout@v6
         with:
+          ref: ${{ steps.pr.outputs.head_ref }}
           fetch-depth: 0
-          ref: ${{ github.event_name == 'workflow_dispatch' && 'main' || github.sha }}
+
+      - name: Sync the PR branch with main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git merge origin/main --no-edit -m "chore: sync with main before processing"
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -44,81 +68,97 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Install Claude Code CLI
-        run: npm install -g @anthropic-ai/claude-code
-
       - name: Run offline tests
         run: python -m unittest discover -s tests -v
 
-      - name: Find pending transcripts
-        id: pending
+      - name: Prepare the transcript
+        id: prep
         shell: bash
         run: |
-          if find transcripts -mindepth 3 -maxdepth 3 -type f -name transcript.txt -print -quit | grep -q .; then
-            echo "found=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "found=false" >> "$GITHUB_OUTPUT"
-            echo "No pending transcripts were found."
-          fi
+          set -euo pipefail
+          python -m archivist prepare
+          { echo "prompt<<ARCHIVIST_EOF"; cat .archivist/prompt.txt; echo; echo "ARCHIVIST_EOF"; } >> "$GITHUB_OUTPUT"
+          { echo "schema<<ARCHIVIST_EOF"; cat .archivist/schema.json; echo; echo "ARCHIVIST_EOF"; } >> "$GITHUB_OUTPUT"
 
-      - name: Process pending transcripts
-        if: steps.pending.outputs.found == 'true'
+      - name: Run Claude (attempt 1)
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}
+          prompt: ${{ steps.prep.outputs.prompt }}
+          claude_args: >-
+            --model ${{ vars.ARCHIVIST_MODEL || 'sonnet' }}
+            --json-schema '${{ steps.prep.outputs.schema }}'
+            --allowedTools "Read,Bash(python -m archivist check-evidence:*)"
+            --disallowedTools "Edit,Write,MultiEdit,WebFetch,WebSearch"
+
+      - name: Verify (attempt 1)
+        id: verify
+        continue-on-error: true
         shell: bash
         env:
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          ARCHIVIST_MODEL: ${{ inputs.model || 'sonnet' }}
-        run: |
-          set -euo pipefail
+          REPORT: ${{ steps.claude.outputs.structured_output }}
+        run: python -m archivist verify
 
-          if [[ -z "$CLAUDE_CODE_OAUTH_TOKEN" ]]; then
-            echo "::error::The CLAUDE_CODE_OAUTH_TOKEN repository secret is not configured."
-            exit 1
-          fi
-
-          mapfile -d '' -t transcript_files < <(
-            find transcripts -mindepth 3 -maxdepth 3 -type f -name transcript.txt -print0 | sort -z
-          )
-
-          for transcript_file in "${transcript_files[@]}"; do
-            echo "Processing $transcript_file"
-            python -m archivist process "$transcript_file" --model "$ARCHIVIST_MODEL"
-          done
-
-      - name: Commit generated reports
-        if: steps.pending.outputs.found == 'true'
-        id: commit
+      - name: Build retry prompt
+        if: steps.verify.outcome == 'failure'
+        id: retry_prep
         shell: bash
         run: |
           set -euo pipefail
+          {
+            cat .archivist/prompt.txt
+            echo
+            echo "Your previous submission was rejected:"
+            cat .archivist/verify-error.txt
+            echo
+            echo "Fix the problem above and submit again."
+          } > .archivist/retry-prompt.txt
+          { echo "prompt<<ARCHIVIST_EOF"; cat .archivist/retry-prompt.txt; echo; echo "ARCHIVIST_EOF"; } >> "$GITHUB_OUTPUT"
 
-          branch="automation/process-transcripts-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-          git switch -c "$branch"
+      - name: Run Claude (attempt 2)
+        if: steps.verify.outcome == 'failure'
+        id: claude_retry
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}
+          prompt: ${{ steps.retry_prep.outputs.prompt }}
+          claude_args: >-
+            --model ${{ vars.ARCHIVIST_MODEL || 'sonnet' }}
+            --json-schema '${{ steps.prep.outputs.schema }}'
+            --allowedTools "Read,Bash(python -m archivist check-evidence:*)"
+            --disallowedTools "Edit,Write,MultiEdit,WebFetch,WebSearch"
+
+      - name: Verify (attempt 2)
+        if: steps.verify.outcome == 'failure'
+        id: verify_retry
+        shell: bash
+        env:
+          REPORT: ${{ steps.claude_retry.outputs.structured_output }}
+        run: python -m archivist verify
+
+      - name: Finalize
+        shell: bash
+        env:
+          ARCHIVIST_MODEL: ${{ vars.ARCHIVIST_MODEL || 'sonnet' }}
+        run: python -m archivist finalize --model "$ARCHIVIST_MODEL"
+
+      - name: Commit results
+        shell: bash
+        env:
+          HEAD_REF: ${{ steps.pr.outputs.head_ref }}
+        run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- transcripts archived output
+          git commit -m "chore: process transcript"
+          git push origin "HEAD:$HEAD_REF"
 
-          if git diff --cached --quiet; then
-            echo "created=false" >> "$GITHUB_OUTPUT"
-            echo "Processing produced no repository changes."
-            exit 0
-          fi
-
-          git commit -m "chore: process pending transcripts"
-          git push origin "HEAD:$branch"
-          echo "created=true" >> "$GITHUB_OUTPUT"
-          echo "branch=$branch" >> "$GITHUB_OUTPUT"
-
-      - name: Open review pull request
-        if: steps.commit.outputs.created == 'true'
+      - name: Comment on the PR
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
-          HEAD_BRANCH: ${{ steps.commit.outputs.branch }}
-        run: |
-          gh pr create \
-            --base main \
-            --head "$HEAD_BRANCH" \
-            --title "chore: process pending transcripts" \
-            --body "Automated transcript processing from GitHub Actions run $GITHUB_RUN_ID. Review the generated reports and archived transcript changes before merging." \
-            --draft
-
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+        run: gh pr comment "$PR_NUMBER" --body-file .archivist/summary.md
