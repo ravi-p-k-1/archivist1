@@ -77,8 +77,8 @@ jobs:
         run: |
           set -euo pipefail
           python -m archivist prepare
-          { echo "prompt<<ARCHIVIST_EOF"; cat .archivist/prompt.txt; echo "ARCHIVIST_EOF"; } >> "$GITHUB_OUTPUT"
-          { echo "schema<<ARCHIVIST_EOF"; cat .archivist/schema.json; echo "ARCHIVIST_EOF"; } >> "$GITHUB_OUTPUT"
+          { echo "prompt<<ARCHIVIST_EOF"; cat .archivist/prompt.txt; echo; echo "ARCHIVIST_EOF"; } >> "$GITHUB_OUTPUT"
+          { echo "schema<<ARCHIVIST_EOF"; cat .archivist/schema.json; echo; echo "ARCHIVIST_EOF"; } >> "$GITHUB_OUTPUT"
 
       - name: Run Claude (attempt 1)
         id: claude
@@ -115,7 +115,7 @@ jobs:
             echo
             echo "Fix the problem above and submit again."
           } > .archivist/retry-prompt.txt
-          { echo "prompt<<ARCHIVIST_EOF"; cat .archivist/retry-prompt.txt; echo "ARCHIVIST_EOF"; } >> "$GITHUB_OUTPUT"
+          { echo "prompt<<ARCHIVIST_EOF"; cat .archivist/retry-prompt.txt; echo; echo "ARCHIVIST_EOF"; } >> "$GITHUB_OUTPUT"
 
       - name: Run Claude (attempt 2)
         if: steps.verify.outcome == 'failure'
