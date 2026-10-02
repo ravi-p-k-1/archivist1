@@ -50,6 +50,15 @@ jobs:
           ref: ${{ steps.pr.outputs.head_ref }}
           fetch-depth: 0
 
+      - name: Sync the PR branch with main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git merge origin/main --no-edit -m "chore: sync with main before processing"
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
