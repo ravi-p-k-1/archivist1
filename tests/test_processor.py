@@ -1,34 +1,31 @@
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
 from archivist.evidence import EvidenceVerificationError
-from archivist.models import ActionItem, ActionReport
-from archivist.processor import ProcessingError, process_transcript, resolve_paths
+from archivist.models import ActionSubmission, ReportSubmission
+from archivist.processor import (
+    finalize_report,
+    resolve_output_paths,
+    write_prepare_artifacts,
+    write_summary,
+)
+from archivist.transcript import ProcessingError, load_pending_transcript
+from tests.helpers import FIXTURE_DATE, load_fixture, write_transcript
 
 
-class FakeExtractor:
-    def __init__(self, report: ActionReport) -> None:
-        self.report = report
-        self.calls = 0
-
-    def extract(self, transcript: str) -> ActionReport:
-        self.calls += 1
-        return self.report
-
-
-def supported_report() -> ActionReport:
-    return ActionReport(
+def supported_report() -> ReportSubmission:
+    return ReportSubmission(
         actions=[
-            ActionItem(
-                action="Create the workflow",
-                owner="Ravi",
-                evidence_excerpt="I will create the workflow.",
-                speaker="Ravi",
-                timestamp="1:00",
+            ActionSubmission(
+                action="Send the doc",
+                owner="Priya",
+                entry="e2",
+                evidence_excerpt="I'll send the doc by Friday.",
             )
         ],
-        decisions=["Use Claude."],
+        decisions=["Ship the new flow next week."],
         open_questions=["Which model should run?"],
     )
 
@@ -37,79 +34,98 @@ class ProcessorTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary.name)
-        self.source = self.root / "transcripts/2026-08-06/otter/transcript.txt"
-        self.source.parent.mkdir(parents=True)
-        self.source.write_text("Ravi 1:00\nI will create the workflow.", encoding="utf-8")
+        write_transcript(self.root, FIXTURE_DATE, load_fixture())
+        self.transcript = load_pending_transcript(self.root)
+        self.paths = resolve_output_paths(self.root, FIXTURE_DATE, "claude-test")
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
     def test_success_writes_output_and_archives_source(self) -> None:
-        paths = resolve_paths(self.root, self.source, "claude-test")
-        extractor = FakeExtractor(supported_report())
+        final = finalize_report(supported_report(), self.transcript, self.paths)
 
-        output = process_transcript(paths, extractor)
-
-        self.assertEqual(output, paths.output)
-        self.assertFalse(paths.source.exists())
-        self.assertTrue(paths.archive.exists())
-        self.assertFalse(paths.source.parent.exists())
-        self.assertFalse(paths.source.parent.parent.exists())
+        self.assertIsNotNone(final)
+        self.assertEqual(final.actions[0].speaker, "Priya")
+        self.assertEqual(final.actions[0].timestamp, "00:00:12")
+        self.assertFalse(self.transcript.source_path.exists())
+        self.assertTrue(self.paths.archive.exists())
+        self.assertTrue(self.paths.output_txt.exists())
+        self.assertTrue(self.paths.output_json.exists())
+        self.assertFalse(self.transcript.source_path.parent.exists())
+        self.assertFalse(self.transcript.source_path.parent.parent.exists())
         self.assertTrue((self.root / "transcripts").exists())
-        contents = paths.output.read_text(encoding="utf-8")
-        self.assertIn("1. Action: Create the workflow", contents)
-        self.assertIn("Owner: Ravi", contents)
 
-    def test_missing_evidence_leaves_source_and_no_output(self) -> None:
-        paths = resolve_paths(self.root, self.source, "claude-test")
+        text = self.paths.output_txt.read_text(encoding="utf-8")
+        self.assertIn("1. Action: Send the doc", text)
+        self.assertIn("Speaker: Priya", text)
+        json_report = json.loads(self.paths.output_json.read_text(encoding="utf-8"))
+        self.assertEqual(json_report["actions"][0]["speaker"], "Priya")
+
+    def test_missing_evidence_leaves_everything_in_place(self) -> None:
         report = supported_report().model_copy(deep=True)
         report.actions[0].evidence_excerpt = "This does not exist."
 
         with self.assertRaises(EvidenceVerificationError):
-            process_transcript(paths, FakeExtractor(report))
+            finalize_report(report, self.transcript, self.paths)
 
-        self.assertTrue(paths.source.exists())
-        self.assertFalse(paths.output.exists())
-        self.assertFalse(paths.archive.exists())
+        self.assertTrue(self.transcript.source_path.exists())
+        self.assertFalse(self.paths.output_txt.exists())
+        self.assertFalse(self.paths.archive.exists())
 
-    def test_existing_output_retries_only_archive(self) -> None:
-        paths = resolve_paths(self.root, self.source, "claude-test")
-        paths.output.parent.mkdir(parents=True)
-        paths.output.write_text("existing report", encoding="utf-8")
-        process_transcript(paths, None)
+    def test_recovery_retries_only_archive_when_output_already_complete(self) -> None:
+        self.paths.output_txt.parent.mkdir(parents=True)
+        self.paths.output_txt.write_text("existing text report", encoding="utf-8")
+        self.paths.output_json.write_text("{}", encoding="utf-8")
 
-        self.assertFalse(paths.source.exists())
-        self.assertTrue(paths.archive.exists())
-        self.assertFalse(paths.source.parent.exists())
-        self.assertFalse(paths.source.parent.parent.exists())
+        final = finalize_report(None, self.transcript, self.paths)
+
+        self.assertIsNone(final)
+        self.assertFalse(self.transcript.source_path.exists())
+        self.assertTrue(self.paths.archive.exists())
+        self.assertEqual(self.paths.output_txt.read_text(encoding="utf-8"), "existing text report")
+
+    def test_partial_output_is_rejected(self) -> None:
+        self.paths.output_txt.parent.mkdir(parents=True)
+        self.paths.output_txt.write_text("existing text report", encoding="utf-8")
+
+        with self.assertRaisesRegex(ProcessingError, "incomplete"):
+            finalize_report(supported_report(), self.transcript, self.paths)
+
+    def test_new_report_requires_a_validated_submission(self) -> None:
+        with self.assertRaisesRegex(ProcessingError, "validated report"):
+            finalize_report(None, self.transcript, self.paths)
+
+        self.assertTrue(self.transcript.source_path.exists())
+        self.assertFalse(self.paths.output_txt.exists())
 
     def test_archive_preserves_nonempty_source_directories(self) -> None:
-        paths = resolve_paths(self.root, self.source, "claude-test")
-        metadata = paths.source.parent / "notes.txt"
+        metadata = self.transcript.source_path.parent / "notes.txt"
         metadata.write_text("Keep this file.", encoding="utf-8")
 
-        process_transcript(paths, FakeExtractor(supported_report()))
+        finalize_report(supported_report(), self.transcript, self.paths)
 
         self.assertTrue(metadata.exists())
-        self.assertTrue(paths.source.parent.exists())
-        self.assertTrue(paths.source.parent.parent.exists())
+        self.assertTrue(self.transcript.source_path.parent.exists())
+        self.assertTrue(self.transcript.source_path.parent.parent.exists())
 
-    def test_new_report_requires_extractor(self) -> None:
-        paths = resolve_paths(self.root, self.source, "claude-test")
+    def test_prepare_writes_view_schema_and_prompt(self) -> None:
+        archivist_dir = self.root / ".archivist"
+        write_prepare_artifacts(self.transcript, "Extraction rules.", archivist_dir)
 
-        with self.assertRaisesRegex(ProcessingError, "extractor is required"):
-            process_transcript(paths, None)
+        view = (archivist_dir / "view.txt").read_text(encoding="utf-8")
+        schema = json.loads((archivist_dir / "schema.json").read_text(encoding="utf-8"))
+        prompt = (archivist_dir / "prompt.txt").read_text(encoding="utf-8")
 
-        self.assertTrue(paths.source.exists())
-        self.assertFalse(paths.output.exists())
+        self.assertIn("[e1 · 00:00:05] Alex:", view)
+        self.assertIn("actions", schema["properties"])
+        self.assertIn("Extraction rules.", prompt)
+        self.assertIn(".archivist/view.txt", prompt)
 
-    def test_multiple_sources_are_rejected(self) -> None:
-        second = self.root / "transcripts/2026-08-06/zoom/transcript.txt"
-        second.parent.mkdir(parents=True)
-        second.write_text("Another source", encoding="utf-8")
+    def test_write_summary(self) -> None:
+        archivist_dir = self.root / ".archivist"
+        write_summary(["Transcript processed.", "", "- Actions: 1"], archivist_dir)
 
-        with self.assertRaisesRegex(ProcessingError, "one transcript source"):
-            resolve_paths(self.root, self.source, "claude-test")
+        self.assertIn("Actions: 1", (archivist_dir / "summary.md").read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
