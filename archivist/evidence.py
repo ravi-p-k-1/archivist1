@@ -1,16 +1,13 @@
 """Deterministic grounding checks for generated action items.
 
-`verify_evidence_excerpts` is the original whole-transcript check used by
-the Claude-Agent-SDK extractor in claude.py (unused by the JSON pipeline,
-kept until phase 5 removes claude.py). `verify_action_evidence` /
-`verify_report_evidence` are the per-entry checks the JSON pipeline uses
-instead, since Claude now cites a compact-view entry id rather than being
-checked against the whole transcript.
+`verify_action_evidence` / `verify_report_evidence` check each action's
+evidence against the compact-view entry it cites, since Claude cites an
+entry id rather than being checked against the whole transcript.
 """
 
 import re
 
-from .models import ActionReport, ActionSubmission, ReportSubmission
+from .models import ActionSubmission, ReportSubmission
 from .transcript import Transcript
 
 
@@ -22,18 +19,6 @@ def normalize_whitespace(value: str) -> str:
     """Collapse all whitespace so wrapped transcript excerpts still match."""
 
     return re.sub(r"\s+", " ", value).strip()
-
-
-def verify_evidence_excerpts(report: ActionReport, transcript: str) -> None:
-    """Require every action's normalized evidence to occur in the transcript."""
-
-    normalized_transcript = normalize_whitespace(transcript)
-    for index, item in enumerate(report.actions, start=1):
-        normalized_excerpt = normalize_whitespace(item.evidence_excerpt)
-        if normalized_excerpt not in normalized_transcript:
-            raise EvidenceVerificationError(
-                f"Action {index} has an evidence excerpt that is absent from the transcript."
-            )
 
 
 def verify_action_evidence(action: ActionSubmission, transcript: Transcript) -> None:
